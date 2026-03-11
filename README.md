@@ -15,7 +15,8 @@ To Run:
 - Extract and locate the node_modules bit
 - Put into local folder and link to this GitHub
 - Pull
+- npm install mocha and npm install chai
 - Run index.html to see webpage
 - It's crap at the minute, but all is well, we shall fix this
 
-Last Update: 4th March 2026, by Rho
+Last Update: 11th March 2026, by Rho

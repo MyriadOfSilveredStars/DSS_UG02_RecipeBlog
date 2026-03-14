@@ -1,3 +1,5 @@
+
+
 const express = require('express')
 const app = express();
 const port = 3000;
@@ -120,8 +122,18 @@ app.post('/makepost', function(req, res) {
     }
 
     // Add post to posts.json
-    posts.push({"username": currentUser , "timestamp": curDate, "postId": newId, "title": req.body.title_field, "content": req.body.content_field});
+    //this is where the post data can be changed before posting
+    //so sanitise at this point
+    //and encrypt because we're storing everything as plaintext rn
 
+    let title = req.body.title_field;
+    let content = req.body.content_field;
+
+    content = sanitiseInputs(content);
+
+
+    posts.push({"username": currentUser , "timestamp": curDate, "postId": newId, "title": title, "content": content});
+    
     fs.writeFileSync(__dirname + '/public/json/posts.json', JSON.stringify(posts));
 
     // Redirect back to my_posts.html
@@ -146,5 +158,15 @@ app.post('/makepost', function(req, res) {
  });
 
 app.listen(port, () => {
-    console.log(`My app listening on port ${port}!`)
+    console.log(`Recipes 4 Students is listening on port ${port}!`)
 });
+
+function sanitiseInputs(inputs) {
+    //uses regex to remove all instances of "bad" inputs
+    //such as html tags and other key words
+    //the < is a placeholder, I will develop a refined regex later
+    const badInputs = "<";
+    inputs = inputs.replace(new RegExp(badInputs, 'g'), "");
+    
+    return inputs;
+}

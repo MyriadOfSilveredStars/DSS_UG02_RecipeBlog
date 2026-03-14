@@ -157,9 +157,4 @@ function searchPosts() {
     }
 }
 
-//Function to sanitise inputs from the user
-function sanitiseInputs() {
-
-}
-
 document.getElementById("search").addEventListener("keyup", searchPosts);

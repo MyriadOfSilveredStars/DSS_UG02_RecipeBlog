@@ -1,5 +1,7 @@
 UG02 DSS 02 Coursework
 
+Last Update: 14th March 2026, by Rho
+
 Rho: working on input validation for login, sign up, blog posts etc
 
 Nik: working on authentication for login, sign up, payments
@@ -22,4 +24,6 @@ To Run:
 - localhost 3000 on your browser
 - It's crap at the minute, but all is well, we shall fix this
 
-Last Update: 14th March 2026, by Rho
+ISSUES TO FIX:
+- by reloading the page, I was logged out but could still make posts
+

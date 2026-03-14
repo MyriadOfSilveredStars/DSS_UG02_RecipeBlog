@@ -15,8 +15,11 @@ To Run:
 - Extract and locate the node_modules bit
 - Put into local folder and link to this GitHub
 - Pull
-- npm install mocha and npm install chai
-- Run index.html to see webpage
+- Navigate to app folder
+- npm install to install all modules
+- npm install mocha and npm install chai as well
+- then use node app.js to run, should say it's listening on port 3000
+- localhost 3000 on your browser
 - It's crap at the minute, but all is well, we shall fix this
 
-Last Update: 11th March 2026, by Rho
+Last Update: 14th March 2026, by Rho

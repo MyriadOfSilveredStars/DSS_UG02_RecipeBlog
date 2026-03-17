@@ -17,13 +17,16 @@ To Run:
 - Extract and locate the node_modules bit
 - Put into local folder and link to this GitHub
 - Pull
-- Navigate to app folder
+- Navigate to app folder in terminal
 - npm install to install all modules
-- npm install mocha and npm install chai as well
+- that should install everything but if not, try installing mocha and chai as well
 - then use node app.js to run, should say it's listening on port 3000
 - localhost 3000 on your browser
-- It's crap at the minute, but all is well, we shall fix this
+- login with "username" and "password"
 
 ISSUES TO FIX:
+- username and password are currently the only acceptable login details
 - by reloading the page, I was logged out but could still make posts
+- before i sanitise the username&password, ensure there's a failsafe so people can't set bad credentials
+- literally everything is stored in plaintext 
 

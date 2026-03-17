@@ -129,7 +129,9 @@ app.post('/makepost', function(req, res) {
     let title = req.body.title_field;
     let content = req.body.content_field;
 
+    //Clean the inputs with the sanitisation code
     content = sanitiseInputs(content);
+    title = sanitiseInputs(title);
 
 
     posts.push({"username": currentUser , "timestamp": curDate, "postId": newId, "title": title, "content": content});

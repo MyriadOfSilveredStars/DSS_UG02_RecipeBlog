@@ -11,7 +11,7 @@ body {
     }
 
     header{
-        background-color:rgb(255, 73, 0);
+        background-color:rgb(68, 102, 0);
         text-align: center;
         height: 150px;
         color: #000000;
@@ -32,11 +32,11 @@ body {
 
     #login_link {
         color: black;
-        background-color: #eda079;
+        background-color: #eeffcc;
         padding: 7px;
         min-width: 100px;
         border-radius: 3px;
-        border: 2px solid #9e3603;
+        border: 2px solid #223300;
         text-transform: uppercase;
         font-weight: bold;
         float: left;
@@ -47,11 +47,11 @@ body {
 
     .link_btn {
         color: black;
-        background-color: #f56d36;
+        background-color: #eeffcc;
         padding: 7px;
         min-width: 100px;
         border-radius: 3px;
-        border: 2px solid #c74402;
+        border: 2px solid #223300;
         text-transform: uppercase;
         font-weight: bold;
         text-align: center;
@@ -62,7 +62,7 @@ body {
     }
 
     .link_btn:hover {
-        background-color: #f2875c;
+        background-color: #3d5214;
     }
 
     .error {
@@ -76,7 +76,7 @@ body {
     #login_btn {
         width: 100px;
         color: black;
-        background-color: #eda079;
+        background-color: #8ab92d;
         font-size: 18px;
         font-weight: bold;
         border: black solid 1px;
@@ -86,7 +86,7 @@ body {
     }
 
     #login_btn:hover {
-        background-color: #f2875c;
+        background-color: #3d5214;
     }
 
     label {
@@ -140,7 +140,7 @@ body {
     main{
         margin: 10px 20%;
         padding: 16px;
-        border: 2px solid #e6b4a1;
+        border: 2px solid #223300;
         border-radius: 20px;
         font-size: 18px;
     }
@@ -148,7 +148,7 @@ body {
     section{
         padding: 20px 0px;
         margin: 10px auto;
-        background-color: #f7a98b;
+        background-color: #d6ebad;
         overflow: hidden;
         border-radius: 10px;
         margin: 5px;
@@ -183,7 +183,7 @@ body {
       }
       
       .user_menu a:hover, .dropdown:hover #login_link {
-        background-color: #f2875c;
+        background-color: #8ab92d;
       }
 
       .dropdown-content {
@@ -223,7 +223,7 @@ body {
 
       .post {
         background-color: white;
-        border: 2px solid #c74402;
+        border: 2px solid #223300;
         border-radius: 10px;
         margin: 10px;
         text-align: left;
@@ -236,7 +236,7 @@ body {
         font-size: 14px;
         /* marg in: 20px; */
         border-radius: 3px;
-        border: 2px solid #c74402;
+        border: 2px solid #223300;
         font-size: 20px;
       }
 
@@ -286,7 +286,7 @@ main button {
     margin: 5px;
     width: 100px;
     color: black;
-    background-color: #f56d36;
+    background-color: #8ab92d;
     font-size: 18px;
     font-weight: bold;
     border: black solid 1px;
@@ -297,7 +297,7 @@ main button {
 }
 
 main button:hover {
-    background-color: #f2875c;
+    background-color: 	#3d5214;
 }
 
 #postForm {
@@ -319,7 +319,7 @@ fieldset{
     flex-wrap: wrap;
     margin: auto 2%;
     width: 100%;
-    border: solid 3px #c74402;
+    border: solid 3px #223300;
     border-radius: 5px;
 }
 
@@ -334,7 +334,7 @@ legend{
     width: 95%;
     padding: 10px;
     margin:0 5px;
-    border: 2px solid #c74402;
+    border: 2px solid #223300;
 }
 
 #postForm input:hover, #postForm textarea:hover{
@@ -350,10 +350,10 @@ legend{
 #postForm button[type=submit]{
     margin: 2% 40%;
     min-width: 150px;
-    border: 2px solid #c74402;
+    border: 2px solid #223300;
     border-radius: 10px;
     cursor: pointer;
-    background-color: #f56d36;
+    background-color: #8ab92d;
     color: black;
     padding: 6px 10px;
     font-weight: bold;
@@ -363,5 +363,5 @@ legend{
 }
 
 #postForm button[type=submit]:hover {
-    background-color: #f2875c;
+    background-color: #3d5214;
 }

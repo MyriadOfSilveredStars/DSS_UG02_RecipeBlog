@@ -3,7 +3,6 @@
     <head>
         <title>Recipes 4 Students</title>
         <meta charset="utf-8">
-        <link rel="icon" type="image/x-icon" href="../imgs/foodie.ico">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="../js/my_posts.js" defer></script>
@@ -11,7 +10,6 @@
     </head>
     <body>
         <header>
-            <a href="../html/index.html"><img id="logo" src="../imgs/logo.png"></a>
             <h1>Recipes 4 Students</h1>
             <div class="dropdown">
                 <button id="login_link" href="#">Username <i class="fa fa-caret-down"></i></button>
@@ -24,24 +22,24 @@
         <nav>
             <ul>
                 <li><a href="../html/index.html">Home</a></li>
-                <li><a href="../html/posts.html">Latest Posts</a></li>
-                <li class="active"><a href="../html/my_recipes.html">My Posts</a></li>
+                <li><a href="../html/posts.html">Trending Recipes</a></li>
+                <li class="active"><a href="../html/my_recipes.html">My Recipes</a></li>
             </ul>
         </nav>
 
         <main>
             <section>
-                <h2>Share your thoughts</h2>
-                <p>Get chatting with your fellow Foodies!</p>
+                <h2>Share your culinary wisdom</h2>
+                <p>Give your fellow students some new ideas</p>
 
                 <form action="/makepost" method="post" id="postForm" name="postForm">
                     <fieldset>
                         <legend>Compose a Post</legend>
-                            <label for="title_field">Post Title:</label>
+                            <label for="title_field">Recipe Title:</label>
                             <input id="title_field" name="title_field" type="text" placeholder="Title" required>
 
-                            <label for="content_field">Post Content:</label>
-                            <textarea id="content_field" name="content_field" placeholder="Write your thoughts here.." required></textarea>
+                            <label for="content_field">Recipe Content:</label>
+                            <textarea id="content_field" name="content_field" placeholder="Write your method here.." required></textarea>
                             <!-- <input id="content_field" name="content_field" type="text"> -->
 
                             <input id="postId" name="postId" type="hidden">
@@ -52,11 +50,11 @@
             </section>
 
             <section id="myPosts">
-                <h2>Your Posts</h2>
-                <p>See all the posts you've made so far.</p>
+                <h2>Your Recipes</h2>
+                <p>See all the recipes you've made so far.</p>
 
                 <i class="fa fa-search" aria-hidden="true"></i>
-                <input class="search_bar" id="search" name="search" type="text" placeholder="Search your posts...">
+                <input class="search_bar" id="search" name="search" type="text" placeholder="Search your recipes...">
             </section>
         </main>
     </body>

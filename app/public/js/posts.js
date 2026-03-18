@@ -57,8 +57,21 @@ async function loadPosts() {
         contentContainer.textContent = content;
         figcap.appendChild(contentContainer);
 
+
+        //this should make a button to open the recipe in full
+        let fullRecipeButton = document.createElement('button');
+        fullRecipeButton.id = "fullrecipe";
+        fullRecipeButton.textContent = "View Full Recipe";
+        fullRecipeButton.addEventListener("click", openRecipe);
+        figcap.appendChild(fullRecipeButton);
+
         postList.insertBefore(postContainer, document.querySelectorAll("article")[0]);
     }
+}
+
+
+function openRecipe(){
+    alert("Hi");
 }
 
 loadPosts();
@@ -103,3 +116,6 @@ function searchPosts() {
 if(document.getElementById("search")) {
     document.getElementById("search").addEventListener("keyup", searchPosts);
 }
+
+
+

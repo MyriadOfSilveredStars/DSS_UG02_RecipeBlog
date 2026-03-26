@@ -3,6 +3,7 @@
     "express": "^4.21.1"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "chai": "^6.2.2",
     "mocha": "^11.3.0",
     "psql": "^0.0.1"

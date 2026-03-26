@@ -4,6 +4,8 @@ const express = require('express')
 const app = express();
 const port = 3000;
 
+const bcrypt = require('bcrypt');
+
 var bodyParser = require('body-parser');
 const fs = require('fs');
 
@@ -11,6 +13,9 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const STORED_HASH = "$2b$10$SJaq2caLJlFS.5BfGRo7BOuJkAB/QYrPWGJpIT93xGsuz78IgwqnC";
+
 
 // Landing page
 app.get('/', (req, res) => {
@@ -31,60 +36,22 @@ fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
 let currentUser = null;
 
 // Login POST request
-app.post('/',function(req, res){
+app.post('/', async function(req, res) {
 
-    // Get username and password entered from user
     var username = req.body.username_input;
     var password = req.body.password_input;
 
-    // Currently only "username" is a valid username
-    if(username !== "username") {
+    const passwordMatch = await bcrypt.compare(password, STORED_HASH);
 
-        // Update login_attempt with credentials used to log in
-        let login_attempt = {"username" : username, "password" : password};
-        let data = JSON.stringify(login_attempt);
-        fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
-
-        // Redirect back to login page
-        res.sendFile(__dirname + '/public/html/login.html', (err) => {
-            if (err){
-                console.log(err);
-            }
-        });
-    }
-
-    // Currently only "password" is a valid password
-    if(password !== "password") {
-
-        // Update login_attempt with credentials used to log in
-        let login_attempt = {"username" : username, "password" : password};
-        let data = JSON.stringify(login_attempt);
-        fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
-
-        // Redirect back to login page
-        res.sendFile(__dirname + '/public/html/login.html', (err) => {
-            if (err){
-                console.log(err);
-            }
-        });
-    }
-
-    // Valid username and password both entered together
-    if(username === "username" && password === "password") {
-        // Update login_attempt with credentials
-        let login_attempt = {"username" : username, "password" : password};
-        let data = JSON.stringify(login_attempt);
-        fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
-
-        // Update current user upon successful login
-        currentUser = req.body.username_input;
-
-        // Redirect to home page
+    if (username === "username" && passwordMatch) {
+        currentUser = username;
         res.sendFile(__dirname + '/public/html/index.html', (err) => {
-            if (err){
-                console.log(err);
-            }
-        })
+            if (err) console.log(err);
+        });
+    } else {
+        res.sendFile(__dirname + '/public/html/login.html', (err) => {
+            if (err) console.log(err);
+        });
     }
 });
 

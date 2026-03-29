@@ -34,6 +34,29 @@
                 <!--This should show the specific post-->
 
             </section>
+
+            <section>
+                <h2>Comments</h2>
+                <p>Let the author know how you found this recipe</p>
+
+                <form action="/makecomment" method="post" id="commentForm" name="commentForm">
+                    <fieldset>
+                        <legend>Write a comment</legend>
+                            <label for="content_field">You say:</label>
+                            <textarea id="content_field" name="content_field" placeholder="Comment here..." required></textarea>
+                            <!-- <input id="content_field" name="content_field" type="text"> -->
+
+                            <input id="postId" name="postId" type="hidden">
+                            <input id="commentId" name="commentId" type="hidden">
+                            
+                            <button type="submit" id="post_button">Post Comment</button>
+                    </fieldset>
+                </form>
+            </section>
+            
+            <section id="commentList">
+                <!--And this should list all the comments for this post-->
+            </section>
         </main>
     </body>
 </html>

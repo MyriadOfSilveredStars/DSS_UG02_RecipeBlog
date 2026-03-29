@@ -28,3 +28,14 @@ CREATE TABLE recipes (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE comments (
+    id BIGSERIAL PRIMARY KEY,
+    author_id BIGINT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    CONSTRAINT fk_comment_author
+        FOREIGN KEY (author_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);

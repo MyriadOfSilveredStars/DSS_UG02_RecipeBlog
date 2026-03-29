@@ -124,9 +124,32 @@ app.post('/makepost', function(req, res) {
     res.sendFile(__dirname + "/public/html/my_recipes.html");
  });
 
+
+app.post('/makecomment', (req, res) => {
+    //blaraghargh
+    // Get the current date
+    let curDate = new Date();
+    curDate = curDate.toLocaleString("en-GB");
+
+    let content = req.body.content_field;
+
+    //Clean the inputs with the sanitisation code
+    content = sanitiseInputs(content);
+
+    //write this to the database
+
+    // Redirect back to my_recipes.html
+    res.sendFile(__dirname + "/public/html/posts.html");
+
+
+});
+
+
 app.listen(port, () => {
     console.log(`Recipes 4 Students is listening on port ${port}!`)
 });
+
+
 
 function sanitiseInputs(inputs) {
     //uses regex to remove all instances of "bad" inputs

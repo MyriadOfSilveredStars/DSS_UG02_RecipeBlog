@@ -89,6 +89,22 @@ body {
         background-color: #3d5214;
     }
 
+    #signup_btn {
+        width: 100px;
+        color: black;
+        background-color: #8ab92d;
+        font-size: 18px;
+        font-weight: bold;
+        border: black solid 1px;
+        border-radius: 5px;
+        margin-top: 10px;
+        transition: background 300ms ease-in-out;
+    }
+
+    #signup_btn:hover {
+        background-color: #3d5214;
+    }
+
     label {
         font-weight: bold;
     }

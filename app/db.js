@@ -17,4 +17,4 @@ pool.connect()
     console.error('Connection error:', err);
   });
 
-module.exports = pool;
+module.exports = {pool};

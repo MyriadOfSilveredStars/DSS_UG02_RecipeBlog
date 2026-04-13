@@ -85,32 +85,25 @@ async function loadRecipe() {
         let commentId = i;
 
         let commentContainer = document.createElement('commentarticle');
-        commentContainer.classList.add("comment");
-        let commentFig = document.createElement('commentfigure');
-        commentContainer.appendChild(commentFig);
+        commentContainer.id = "existingcomment";
 
         let commentIdContainer = document.createElement("p");
         commentIdContainer.textContent = commentId;
         commentIdContainer.hidden = true;
         commentId.id = "commentId";
         commentContainer.appendChild(commentIdContainer);
-
-        let commentImg = document.createElement('img');
-        let commentfigcap = document.createElement('commentfigcaption');
-        commentFig.appendChild(commentImg);
-        commentFig.appendChild(commentfigcap);
         
         let commenterContainer = document.createElement('h5');
         commenterContainer.textContent = commentAuthor;
-        commentfigcap.appendChild(commenterContainer);
+        commentContainer.appendChild(commenterContainer);
 
         let commentTimeContainer = document.createElement('h5');
         commentTimeContainer.textContent = commentTimestamp;
-        commentfigcap.appendChild(commentTimeContainer);
+        commentContainer.appendChild(commentTimeContainer);
 
         let commentContentContainer = document.createElement('p');
         commentContentContainer.textContent = commentContent;
-        commentfigcap.appendChild(commentContentContainer);
+        commentContainer.appendChild(commentContentContainer);
 
         commentList.appendChild(commentContainer);
     }

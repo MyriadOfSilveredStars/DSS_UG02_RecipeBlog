@@ -39,3 +39,12 @@ CREATE TABLE comments (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE paymentinfo (
+    id BIGSERIAL PRIMARY KEY,
+    full_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    cardnum BIGINT NOT NULL,
+    sortcode BIGINT NOT NULL,
+    seccode BIGINT NOT NULL
+)

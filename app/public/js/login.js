@@ -11,7 +11,11 @@ function showLoginError(message) {
 
 const params = new URLSearchParams(window.location.search);
 
+// brute force protection
+if (params.get("error") == "lockout") {
+    showLoginError("Too many failed login attempts. Please try again later.");
+}
 // ensuring that error message always says username OR password to prevent helping a hacker
-if (params.get("error")) {
+else if (params.get("error")) {
     showLoginError("Incorrect username or password.");
 }

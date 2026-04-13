@@ -14,7 +14,10 @@ app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const STORED_HASH = "$2b$10$SJaq2caLJlFS.5BfGRo7BOuJkAB/QYrPWGJpIT93xGsuz78IgwqnC";
+const storedHash = "$2b$10$SJaq2caLJlFS.5BfGRo7BOuJkAB/QYrPWGJpIT93xGsuz78IgwqnC";
+
+const loginAttempts = new Map();
+const maxAttempts = 5;
 
 
 // Landing page
@@ -35,20 +38,32 @@ fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
 // Store who is currently logged in
 let currentUser = null;
 
+
+
 // Login POST request
 app.post('/', async function(req, res) {
+    const ip = req.ip;
+    console.log(`Login attempt from IP: ${ip}`);
+
+    const attempts = loginAttempts.get(ip) || 0;
+
+    if (attempts >= maxAttempts) {
+        return res.redirect('/?error=lockout');
+    }
 
     var username = req.body.username_input;
     var password = req.body.password_input;
 
-    const passwordMatch = await bcrypt.compare(password, STORED_HASH);
+    const passwordMatch = await bcrypt.compare(password, storedHash);
 
     if (username === "username" && passwordMatch) {
+        loginAttempts.delete(ip);
         currentUser = username;
         res.sendFile(__dirname + '/public/html/index.html', (err) => {
             if (err) console.log(err);
         });
     } else {
+        loginAttempts.set(ip, attempts + 1);
         res.redirect('/?error=1');
     }
 });

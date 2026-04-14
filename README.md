@@ -8,7 +8,7 @@ Nik: working on authentication for login, sign up, payments
 
 Jay: working on database encryption
 
-Riley: working on <insert whatever you want to work on here :)>
+Riley: working on logging in and registering with mult. accounts
 
 Everyone: test test test. Write Unit Testing for your sections, comment nicely so we all know what that does. If you use libraries, perhaps add a brief comment on what it does and how it works
 

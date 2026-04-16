@@ -27,6 +27,13 @@ async function loadRecipe() {
     let params = new URLSearchParams(window.location.search);
     let postId = parseInt(params.get("postID"));
     let recipe = post_data.find(post => post.postId === postId); 
+
+    //check if recipe exists
+    if (!recipe) {
+        postList.textContent = "Recipe not found.";
+        return;
+    }
+
     //add the specific post
     let postAuthor = recipe.username;
     let postTimestamp = recipe.timestamp;

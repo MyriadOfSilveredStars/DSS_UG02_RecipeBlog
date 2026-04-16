@@ -26,11 +26,12 @@ async function loadRecipe() {
     //get the post ID from the url
     let params = new URLSearchParams(window.location.search);
     let postId = parseInt(params.get("postID"));
+    let recipe = post_data.find(post => post.postId === postId); 
     //add the specific post
-    let postAuthor = post_data[postId].username;
-    let postTimestamp = post_data[postId].timestamp;
-    let postTitle = post_data[postId].title;
-    let postContent = post_data[postId].content;
+    let postAuthor = recipe.username;
+    let postTimestamp = recipe.timestamp;
+    let postTitle = recipe.title;
+    let postContent = recipe.content;
 
     let postComments = ["this recipe sucks!!", "i substitued everything for air and it came out wrong :(", "i can't eat food, can you make one with my substitutions?"] //replace this with actual comments when implemented
 

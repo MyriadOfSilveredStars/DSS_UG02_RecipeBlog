@@ -18,6 +18,7 @@ To Run:
 - npm install to install all modules
 - that should install everything but if not, try installing mocha and chai as well
 - then use node app.js to run, should say it's listening on port 3000
+- ^^ to restart the server automatically after code changes, you can use "npm run dev" to run with nodemon instead. ^^
 - localhost 3000 on your browser
 - login with "username" and "password"
 

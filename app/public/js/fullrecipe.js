@@ -23,14 +23,14 @@ async function loadRecipe() {
         }
     }
 
-    //add the specific post
-    let postAuthor = post_data[specificRecipeID].username;
-    let postTimestamp = post_data[specificRecipeID].timestamp;
-    let postTitle = post_data[specificRecipeID].title;
-    let postContent = post_data[specificRecipeID].content;
     //get the post ID from the url
     let params = new URLSearchParams(window.location.search);
     let postId = parseInt(params.get("postID"));
+    //add the specific post
+    let postAuthor = post_data[postId].username;
+    let postTimestamp = post_data[postId].timestamp;
+    let postTitle = post_data[postId].title;
+    let postContent = post_data[postId].content;
 
     let postComments = ["this recipe sucks!!", "i substitued everything for air and it came out wrong :(", "i can't eat food, can you make one with my substitutions?"] //replace this with actual comments when implemented
 
@@ -44,7 +44,7 @@ async function loadRecipe() {
     let postIdContainer = document.createElement("p");
     postIdContainer.textContent = postId;
     postIdContainer.hidden = true;
-    postId.id = "postId";
+    postIdContainer.id = "postId";
     postContainer.appendChild(postIdContainer);
 
     let img = document.createElement('img');
@@ -85,13 +85,13 @@ async function loadRecipe() {
         let commentContent = postComments[i];
         let commentId = i;
 
-        let commentContainer = document.createElement('commentarticle');
+        let commentContainer = document.createElement('article');
         commentContainer.id = "existingcomment";
 
         let commentIdContainer = document.createElement("p");
         commentIdContainer.textContent = commentId;
         commentIdContainer.hidden = true;
-        commentId.id = "commentId";
+        commentIdContainer.id = "commentId";
         commentContainer.appendChild(commentIdContainer);
         
         let commenterContainer = document.createElement('h5');

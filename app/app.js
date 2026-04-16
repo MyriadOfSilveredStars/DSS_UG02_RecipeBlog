@@ -5,8 +5,6 @@ const app = express();
 const port = 3000;
 
 const bcrypt = require('bcrypt');
-
-const bodyParser = require('body-parser');
 const fs = require('fs');
 
 //require the database
@@ -14,8 +12,8 @@ const fs = require('fs');
 
 app.use(express.static(__dirname + '/public'));
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const storedHash = "$2b$10$SJaq2caLJlFS.5BfGRo7BOuJkAB/QYrPWGJpIT93xGsuz78IgwqnC";
 

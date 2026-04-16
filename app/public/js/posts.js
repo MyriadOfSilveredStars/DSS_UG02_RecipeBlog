@@ -73,7 +73,7 @@ async function loadPosts() {
 
 function openRecipe(postID){
     alert("Post Selected:" + postID);
-    window.location.href = "fullrecipe.html";
+    window.location.href = `fullrecipe.html?postID=${postID}`;
 
 
 }

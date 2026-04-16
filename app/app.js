@@ -1,9 +1,8 @@
 
 
 const express = require('express')
+require("dotenv").config();
 const app = express();
-const port = 3000;
-
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
@@ -143,6 +142,7 @@ app.post('/makepost', function(req, res) {
 
 app.post('/makecomment', (req, res) => {
     //blaraghargh
+    //gab gnglaoohhlaaaaaarghhhhhhhaaaaaaaaaaaaaaaanhhophphna       aaaaaaaaaaaaaahaaa
     // Get the current date
     let curDate = new Date();
     curDate = curDate.toLocaleString("en-GB");
@@ -161,8 +161,8 @@ app.post('/makecomment', (req, res) => {
 });
 
 
-app.listen(port, () => {
-    console.log(`Recipes 4 Students is listening on port ${port}!`)
+app.listen(process.env.PORT, () => {
+    console.log(`Recipes 4 Students is listening on port: ${process.env.PORT}!`)
 });
 
 

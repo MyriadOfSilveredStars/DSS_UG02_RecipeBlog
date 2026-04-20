@@ -20,7 +20,8 @@ I have been unable to connect to the database that has been being hosted, and ru
 - Navigate to app folder in terminal
 - npm install to install all modules
 - docker compose up -d
-///// Seperate schemas for each table we need. Cleaner and easier to work with. Right now I just have the sql for the user table implemented, and I left schema.sql in tact because it's still valid to use as a base to build other tables from. If you want to add more tables to the db then create the appropriate schema and execute it as you would with the one below
+  
+NOTE: I seperated schemas for each table we need. Cleaner and easier to work with. Right now I just have the sql for the user table implemented, and I left schema.sql in tact because it's still valid to use as a base to build other tables from. If you want to add more tables to the db then create the appropriate schema and execute it as you would with the one below
 - docker exec -i recipeblog-db psql -U db_2026_cmp_6045b_002_ug02_user -d db_2026_cmp_6045b_002_ug02 < sql/generateUserTable.sql
 - docker exec -it recipeblog-db psql -U db_2026_cmp_6045b_002_ug02_user -d db_2026_cmp_6045b_002_ug02
 - From here, you can execute psql commands on the db e.g. \dt, \d users for the user table. \q to exit. 

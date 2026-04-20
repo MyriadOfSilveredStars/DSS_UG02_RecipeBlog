@@ -1,25 +1,18 @@
-
-
 const express = require('express')
 require("dotenv").config();
 const app = express();
-const bcrypt = require('bcrypt');
 const fs = require('fs');
-
-//require the database
-//const pool = require('./db')
+const authRoutes = require("./routes/auth");
+const passport = require("passport");
+require("./config/passport");
 
 app.use(express.static(__dirname + '/public'));
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-const storedHash = "$2b$10$SJaq2caLJlFS.5BfGRo7BOuJkAB/QYrPWGJpIT93xGsuz78IgwqnC";
+app.use(passport.initialize());
 
-const loginAttempts = new Map();
-const maxAttempts = 5;
-
-
+app.use('/api', authRoutes);
 // Landing page
 app.get('/', (req, res) => {
     /// send the static file
@@ -28,44 +21,6 @@ app.get('/', (req, res) => {
             console.log(err);
         }
     })
-});
-
-// Reset login_attempt.json when server restarts
-let login_attempt = {"username" : "null", "password" : "null"};
-let data = JSON.stringify(login_attempt);
-fs.writeFileSync(__dirname + '/public/json/login_attempt.json', data);
-
-// Store who is currently logged in
-let currentUser = null;
-
-
-
-// Login POST request
-app.post('/', async function(req, res) {
-    const ip = req.ip;
-    console.log(`Login attempt from IP: ${ip}`);
-
-    const attempts = loginAttempts.get(ip) || 0;
-
-    if (attempts >= maxAttempts) {
-        return res.redirect('/?error=lockout');
-    }
-
-    var username = req.body.username_input;
-    var password = req.body.password_input;
-
-    const passwordMatch = await bcrypt.compare(password, storedHash);
-
-    if (username === "username" && passwordMatch) {
-        loginAttempts.delete(ip);
-        currentUser = username;
-        res.sendFile(__dirname + '/public/html/index.html', (err) => {
-            if (err) console.log(err);
-        });
-    } else {
-        loginAttempts.set(ip, attempts + 1);
-        res.redirect('/?error=1');
-    }
 });
 
 // Make a post POST request

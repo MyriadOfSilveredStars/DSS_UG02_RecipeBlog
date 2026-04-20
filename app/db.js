@@ -1,11 +1,20 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
+// Debugging, should remove this later.
+console.log("DB config:", {
+  user: process.env.DB_USERNAME,
+  database: process.env.DB_DATABASE,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT
+});
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE
 });
 
 pool.connect()
@@ -17,4 +26,4 @@ pool.connect()
     console.error('Connection error:', err);
   });
 
-module.exports = {pool};
+module.exports = pool;

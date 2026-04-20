@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:18
+    container_name: recipeblog-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: db_2026_cmp_6045b_002_ug02_user
+      POSTGRES_PASSWORD: dDYSvzz9qCniGRgh7i0vfJ77bxtaedI6
+      POSTGRES_DB: db_2026_cmp_6045b_002_ug02
+    ports:
+      - "1234:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:

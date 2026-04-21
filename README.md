@@ -32,6 +32,7 @@ NOTE: I seperated schemas for each table we need. Cleaner and easier to work wit
 
 TROUBLESHOOTING: if you run into any fixes for issues and fixes please put them here.
 - If password authentication fails for the database you are connected to then the port may already be in use, in which case change it in .yaml and .env
+- If it isn't running, check that you aren't being stupid like me (rho) and: leave the app folder, use npm start instead
 
 To Run:
 - Pull into new folder

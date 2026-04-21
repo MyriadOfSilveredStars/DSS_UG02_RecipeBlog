@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "/html/index.html";
         } catch (error) {
             console.error(error);
-            messageElement.textContent("Something went wrong.")
+            messageElement.textContent = "Something went wrong.";
         }
     });
 });

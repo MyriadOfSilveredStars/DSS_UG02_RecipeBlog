@@ -66,3 +66,43 @@ exports.publishRecipe = async (req, res) => {
         });
     }
 }
+
+exports.editRecipe = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            status: "error",
+            msg: "Validation error",
+            errors: errors.array()
+        });
+    }
+
+    try {
+        const {
+            title,
+            summary,
+            content,
+            image_url
+        } = req.body;
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
+    }
+}
+
+exports.loadRecipe = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            status: "error",
+            msg: "Validation error",
+            errors: errors.array()
+        });
+    }
+}

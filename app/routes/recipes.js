@@ -2,6 +2,8 @@ const { Router } = require("express");
 const { body } = require("express-validator");
 const authenticateJWT = require("../middlewares/authenticateJWT");
 const { publishRecipe } = require("../controllers/recipes");
+const { editRecipe } = require("../controllers/recipes");
+const { loadRecipe } = require("../controllers/recipes");
 
 const router = Router();
 
@@ -31,5 +33,8 @@ const validateRecipe = [
 ];
 
 router.post("/publishrecipe", validateRecipe, authenticateJWT, publishRecipe);
+// up in the air on if i repeat the use of validateRecipe for editing recipes, but we'll see how it goes.
+router.post("/editrecipe", validateRecipe, authenticateJWT, publishRecipe);
+router.post("/loadrecipe", loadRecipe);
 
 module.exports = router;

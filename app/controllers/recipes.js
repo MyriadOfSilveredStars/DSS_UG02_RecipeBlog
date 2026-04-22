@@ -74,7 +74,7 @@ exports.publishRecipe = async (req, res) => {
             msg: "Internal server error."
         });
     }
-}
+};
 
 exports.editRecipe = async (req, res) => {
     const errors = validationResult(req);
@@ -165,7 +165,7 @@ exports.editRecipe = async (req, res) => {
                 content,
                 image_url || null,
                 newSlug,
-                req.user.id
+                recipeId
             ]
         );
 
@@ -187,7 +187,7 @@ exports.editRecipe = async (req, res) => {
     } finally {
         client.release();
     }
-}
+};
 
 exports.loadRecipe = async (req, res) => {
     const errors = validationResult(req);
@@ -199,4 +199,83 @@ exports.loadRecipe = async (req, res) => {
             errors: errors.array()
         });
     }
+};
+
+exports.loadAllRecipes = async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            status: "error",
+            msg: "Validation error",
+            errors: errors.array()
+        });
+    }
+    try { 
+        // 
+        const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
+        const offset = parseInt(req.query.offset, 10) || 0;
+        const search = req.query.q?.trim() || "";
+        let result;
+
+        if (search) {
+            result = await pool.query(
+                `SELECT r.id,
+                    r.author_id,
+                    r.title,
+                    r.slug,
+                    r.summary,
+                    r.image_url,
+                    r.subscriber_only,
+                    r.created_at,
+                    r.updated_at,
+                    u.username
+                FROM recipes r
+                JOIN users u ON r.author_id = u.id
+                WHERE r.title ILIKE $1
+                    OR r.summary ILIKE $1
+                    OR r.content ILIKE $1
+                    OR u.username ILIKE $1
+                ORDER BY r.created_at DESC
+                LIMIT $2 OFFSET $3`,
+                [`%${search}%`, limit, offset]
+            );
+        } else {
+            result = await pool.query(
+                `SELECT r.id,
+                    r.author_id,
+                    r.title,
+                    r.slug,
+                    r.summary,
+                    r.image_url,
+                    r.subscriber_only,
+                    r.created_at,
+                    r.updated_at,
+                    u.username
+                FROM recipes r
+                JOIN users u ON r.author_id = u.id
+                ORDER BY r.created_at DESC
+                LIMIT $1 OFFSET $2`,
+                [limit, offset]
+            );
+        }
+
+        return res.status(200).json({
+            status: "success",
+            count: result.rows.length,
+            limit,
+            offset,
+            recipes: result.rows
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
+    }
+};
+
+exports.deleteRecipe = async (req, res) => {
+
 }

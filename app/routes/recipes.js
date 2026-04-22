@@ -1,9 +1,7 @@
 const { Router } = require("express");
 const { body } = require("express-validator");
 const authenticateJWT = require("../middlewares/authenticateJWT");
-const { publishRecipe } = require("../controllers/recipes");
-const { editRecipe } = require("../controllers/recipes");
-const { loadRecipe } = require("../controllers/recipes");
+const { publishRecipe, editRecipe, loadRecipe, loadAllRecipes, deleteRecipe } = require("../controllers/recipes");
 
 const router = Router();
 
@@ -34,7 +32,7 @@ const validateRecipe = [
 
 router.post("/recipes", validateRecipe, authenticateJWT, publishRecipe);
 router.put("/recipes/:slug", validateRecipe, authenticateJWT, editRecipe);
-router.delete("/recipes/:slug", authenticateJWT, deleteRecipe)
+router.delete("/recipes/:slug", authenticateJWT, deleteRecipe);
 router.get("/recipes", loadAllRecipes);
 router.get("/recipes/:slug", loadRecipe);
 

@@ -32,9 +32,10 @@ const validateRecipe = [
     .isBoolean().withMessage("subscriber_only must be true or false.")
 ];
 
-router.post("/publishrecipe", validateRecipe, authenticateJWT, publishRecipe);
-// up in the air on if i repeat the use of validateRecipe for editing recipes, but we'll see how it goes.
-router.post("/editrecipe", validateRecipe, authenticateJWT, publishRecipe);
-router.post("/loadrecipe", loadRecipe);
+router.post("/recipes", validateRecipe, authenticateJWT, publishRecipe);
+router.put("/recipes/:slug", validateRecipe, authenticateJWT, editRecipe);
+router.delete("/recipes/:slug", authenticateJWT, deleteRecipe)
+router.get("/recipes", loadAllRecipes);
+router.get("/recipes/:slug", loadRecipe);
 
 module.exports = router;

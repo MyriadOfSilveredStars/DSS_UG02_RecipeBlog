@@ -254,6 +254,7 @@ exports.loadAllRecipes = async (req, res) => {
         const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
         const offset = parseInt(req.query.offset, 10) || 0;
         const search = req.query.q?.trim() || "";
+        const queryLimiter = limit + 1; 
         let result;
 
         if (search) {
@@ -276,7 +277,7 @@ exports.loadAllRecipes = async (req, res) => {
                     OR u.username ILIKE $1
                 ORDER BY r.created_at DESC
                 LIMIT $2 OFFSET $3`,
-                [`%${search}%`, limit, offset]
+                [`%${search}%`, queryLimiter, offset]
             );
         } else {
             result = await pool.query(
@@ -294,8 +295,15 @@ exports.loadAllRecipes = async (req, res) => {
                 JOIN users u ON r.author_id = u.id
                 ORDER BY r.created_at DESC
                 LIMIT $1 OFFSET $2`,
-                [limit, offset]
+                [queryLimiter, offset]
             );
+        }
+
+        /* This is why we have the query limiter variable that is +1 of limit.
+         If there is a next page, remove the last result from the array. */
+        const hasNextPage = result.rows.length > limit;
+        if (hasNextPage) {
+            result.rows.pop();
         }
 
         return res.status(200).json({
@@ -303,6 +311,7 @@ exports.loadAllRecipes = async (req, res) => {
             count: result.rows.length,
             limit,
             offset,
+            hasNextPage,
             recipes: result.rows
         });
     } catch (error) {

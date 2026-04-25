@@ -2,13 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search");
     const postList = document.getElementById("postsList");
 
+    const prevButton = document.getElementById("prevPage");
+    const nextButton = document.getElementById("nextPage");
+    const pageNumber = document.getElementById("pageNumber");
+
+    let currentPage = 1;
+    const limit = 10;
+
     // Stops server from being overloaded each time a keypress is made during a search
     let searchTimeout = null;
 
-    const loadPosts = async (search = "") => {
+    const loadPosts = async (search = "", page = 1) => {
         try {
+            const offset = (page - 1) * limit;
             const response = await fetch(
-                `/api/recipes?q=${encodeURIComponent(search)}&limit=10&offset=0`
+                `/api/recipes?q=${encodeURIComponent(search)}&limit=${limit}&offset=${offset}`
             );
 
             const data = await response.json();
@@ -19,6 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             renderPosts(data.recipes);
+            
+            pageNumber.textContent = `Page ${page}`;
+            // Can't go back on the first page
+            prevButton.disabled = page === 1;
+            // If there are less than 10 pages 
+            nextButton.disabled = !data.hasNextPage;
 
         } catch (error) {
             console.error("Error loading posts:", error);
@@ -90,10 +104,22 @@ document.addEventListener("DOMContentLoaded", () => {
             clearTimeout(searchTimeout);
 
             searchTimeout = setTimeout(() => {
-                loadPosts(searchValue);
+                loadPosts(searchValue, currentPage);
             }, 500);
         });
     }
+    
+    prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadPosts(searchInput.value.trim(), currentPage);
+        }
+    });
+    nextButton.addEventListener("click", () => {
+        currentPage++
+        loadPosts(searchInput.value.trim(), currentPage);
+    })
+
     // Load posts for the first time
-    loadPosts();
+    loadPosts("", currentPage);
 });

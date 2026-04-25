@@ -2,7 +2,7 @@
   "devDependencies": {
     "chai": "^6.2.2",
     "husky": "^9.1.7",
-    "mocha": "^7.2.0",
+    "mocha": "^11.3.0",
     "nodemon": "^3.1.14"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
   },
   "scripts": {
     "start": "node app/app.js",
-    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js"
+    "dev": "nodemon --watch app --ext js,mjs,cjs --ignore app/public/json/*.json app/app.js",
+    "test" : "npx mocha"
   }
 }

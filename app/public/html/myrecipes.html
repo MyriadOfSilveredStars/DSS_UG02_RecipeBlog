@@ -1,12 +1,11 @@
-<!--This is for paid recipes, the user can pay to access them-->
 <!DOCTYPE html>
 <html>
     <head>
-        <title> Recipes 4 Students </title>
+        <title>Recipes 4 Students</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="../js/premiumrecipes.js" defer></script>
+        <script src="../js/myrecipes.js" defer></script>
         <script src="../js/main.js" defer></script>
     </head>
     <body>
@@ -15,7 +14,7 @@
             <div class="dropdown">
                 <button id="login_link" href="#">Username <i class="fa fa-caret-down"></i></button>
                 <div class="dropdown-content">
-                    <a id="logout_btn" href="../html/login.html">Log Out</a>
+                    <a id="logout_btn" href="../html/login.html">Log out</a>
                 </div>
             </div>
         </header>
@@ -24,7 +23,7 @@
             <ul>
                 <li><a href="../html/index.html">Home</a></li>
                 <li><a href="../html/posts.html">Trending Recipes</a></li>
-                <li><a href="../html/myrecipes.html">My Recipes</a></li>
+                <li class="active"><a href="../html/myrecipes.html">My Recipes</a></li>
                 <li><a href="../html/createrecipe.html">Publish A Recipe</a></li>
                 <li><a href="../html/payment.html">Subscribe!</a></li>
             </ul>
@@ -32,11 +31,16 @@
 
         <main>
             <section id="postsList">
-                <h2>Premium Recipes</h2>
-                <p>Subscribe to view premium recipes developed by Michelin star chefs from around the world!</p>
+                <h2>Your Recipes</h2>
+                <p>See all the recipes you've made so far.</p>
 
                 <i class="fa fa-search" aria-hidden="true"></i>
                 <input class="search_bar" id="search" name="search" type="text" placeholder="Search recipes...">
+                <div id="pageController">
+                    <button id="prevPage">Previous</button>
+                    <span id="pageNumber">Page 1</span>
+                    <button id="nextPage">Next</button>
+                </div>
             </section>
         </main>
     </body>

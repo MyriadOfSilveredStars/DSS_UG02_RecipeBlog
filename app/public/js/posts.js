@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             clearTimeout(searchTimeout);
 
             searchTimeout = setTimeout(() => {
-                currentPage = 1;
+                
                 loadPosts(searchValue, currentPage);
             }, 500);
         });

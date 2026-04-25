@@ -14,12 +14,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadPosts = async (search = "", page = 1) => {
         try {
             const token = localStorage.getItem("token");
+
+            if(!token) {
+                window.location.href = "../html/login.html";
+            }
+
             const offset = (page - 1) * limit;
             const response = await fetch(
                 `/api/recipes/my-recipes?q=${encodeURIComponent(search)}&limit=${limit}&offset=${offset}`, {
                     headers: {Authorization: `Bearer ${token}`}
             });
+            if (response.status === 401 || response.status === 403) {
+                // Token expired or invalid → log user out
+                localStorage.removeItem("token");
+                localStorage.removeItem("userName");
+                localStorage.removeItem("userEmail");
 
+                window.location.href = "../html/login.html";
+                return;
+            }
             const data = await response.json();
             
             if (!response.ok) {
@@ -86,12 +99,24 @@ document.addEventListener("DOMContentLoaded", () => {
             summary.textContent = recipe.summary || "";
             figcap.appendChild(summary);
 
-            const button = document.createElement("button");
-            button.textContent = "View Full Recipe";
-            button.addEventListener("click", () => {
+            const recipeButton = document.createElement("button");
+            recipeButton.textContent = "View Full Recipe";
+            recipeButton.addEventListener("click", () => {
                 window.location.href = `fullrecipe.html?slug=${encodeURIComponent(recipe.slug)}`
             });
-            figcap.appendChild(button);
+            figcap.appendChild(recipeButton);
+            const editButton = document.createElement("button");
+            editButton.textContent = "Edit recipe";
+            editButton.addEventListener("click", () => {
+                window.location.href = `editrecipe.html?slug=${encodeURIComponent(recipe.slug)}`
+            });
+            figcap.appendChild(editButton);
+            const deleteButton = document.createElement("button");
+            deleteButton.textContent = "Delete recipe";
+            deleteButton.addEventListener("click", () => {
+                window.location.href = `deleterecipe.html?slug=${encodeURIComponent(recipe.slug)}`
+            });
+            figcap.appendChild(deleteButton);
 
             postsList.appendChild(article);
         });

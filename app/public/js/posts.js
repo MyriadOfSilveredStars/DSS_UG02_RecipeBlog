@@ -1,125 +1,127 @@
-// Function to load posts made by user who is currently logged in
-async function loadPosts() {
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("search");
+    const postList = document.getElementById("postsList");
 
-    // Load posts data
-    const post_response = await fetch("../json/posts.json");
-    const post_data = await post_response.json();
+    const prevButton = document.getElementById("prevPage");
+    const nextButton = document.getElementById("nextPage");
+    const pageNumber = document.getElementById("pageNumber");
 
-    const login_response = await fetch("../json/login_attempt.json");
-    const login_data = await login_response.json();
+    let currentPage = 1;
+    const limit = 10;
 
-    let postList = document.getElementById('postsList');
+    // Stops server from being overloaded each time a keypress is made during a search
+    let searchTimeout = null;
 
-    // Remove current posts
-    for(let i = 0; i < postList.children.length; i++) {
-        if(postList.children[i].nodeName == "article") {
-            postList.removeChild(postList.children[i]);
+    const loadPosts = async (search = "", page = 1) => {
+        try {
+            const offset = (page - 1) * limit;
+            const response = await fetch(
+                `/api/recipes?q=${encodeURIComponent(search)}&limit=${limit}&offset=${offset}`
+            );
+
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error(data.msg || "Failed to load the recipes.");
+                return;
+            }
+
+            renderPosts(data.recipes);
+            
+            pageNumber.textContent = `Page ${page}`;
+            // Can't go back on the first page
+            prevButton.disabled = page === 1;
+            // If there are less than 10 pages 
+            nextButton.disabled = !data.hasNextPage;
+
+        } catch (error) {
+            console.error("Error loading posts:", error);
         }
     }
 
-    // Add all recorded posts
-    for(let i = 0; i < post_data.length; i++) {
-        let author = post_data[i].username;
-        let timestamp = post_data[i].timestamp;
-        let title = post_data[i].title;
-        let content = post_data[i].content;
-        let postId = post_data[i].postId;
-
-        let postContainer = document.createElement('article');
-        postContainer.classList.add("post");
-        let fig = document.createElement('figure');
-        postContainer.appendChild(fig);
-
-        let postIdContainer = document.createElement("p");
-        postIdContainer.textContent = postId;
-        postIdContainer.hidden = true;
-        postId.id = "postId";
-        postContainer.appendChild(postIdContainer);
-
-        let img = document.createElement('img');
-        let figcap = document.createElement('figcaption');
-        fig.appendChild(img);
-        fig.appendChild(figcap);
-        
-        let titleContainer = document.createElement('h3');
-        titleContainer.textContent = title;
-        figcap.appendChild(titleContainer);
-        
-        let usernameContainer = document.createElement('h5');
-        usernameContainer.textContent = author;
-        figcap.appendChild(usernameContainer);
-
-        let timeContainer = document.createElement('h5');
-        timeContainer.textContent = timestamp;
-        figcap.appendChild(timeContainer);
-
-        let contentContainer = document.createElement('p');
-        contentContainer.textContent = content;
-        figcap.appendChild(contentContainer);
-
-
-        //this should make a button to open the recipe in full
-        let fullRecipeButton = document.createElement('button');
-        fullRecipeButton.id = "fullrecipe";
-        fullRecipeButton.textContent = "View Full Recipe";
-
-        fullRecipeButton.addEventListener("click", () => openRecipe(postId));
-        figcap.appendChild(fullRecipeButton);
-
-        postList.insertBefore(postContainer, document.querySelectorAll("article")[0]);
-    }
-}
-
-
-function openRecipe(postID){
-    alert("Post Selected:" + postID);
-    window.location.href = `fullrecipe.html?postID=${postID}`;
-
-
-}
-
-loadPosts();
-
-// Function to filter posts on page using search bar
-function searchPosts() {
-
-    let searchBar = document.getElementById('search');
-
-    // Get contents of search bar
-    let filter = searchBar.value.toUpperCase();
-
-    let postList = document.getElementById('postsList');
-    let posts = postList.getElementsByTagName('article');
-
-    // Loop through all posts, and hide ones that don't match the search
-    for (i = 0; i < posts.length; i++) {
-
-        // Search body of post
-        let content = posts[i].getElementsByTagName('p')[0];
-        let postContent = content.textContent || content.innerText;
-
-        // Search title of post
-        let title = posts[i].getElementsByTagName("h3")[0];
-        let titleContent = title.textContent || title.innerText;
-
-        // Search username of post
-        let username = posts[i].getElementsByTagName("h5")[0];
-        let usernameContent = username.textContent || username.innerText;
-
-        // Change display property of post depending on if it matches search query
-        if (postContent.toUpperCase().indexOf(filter) > -1 || titleContent.toUpperCase().indexOf(filter) > - 1 ||
-             usernameContent.toUpperCase().indexOf(filter) > - 1) {
-            posts[i].style.display = "";
-        } else {
-            posts[i].style.display = "none";
+    const renderPosts = (recipes) => {
+        // Remove previously displayed posts
+        postList.querySelectorAll("article").forEach(article => article.remove());
+        // Remove No Recipes message
+        const messageToRemove = document.getElementById("bogusSearchMessage");
+        if (messageToRemove) {
+            messageToRemove.remove();
         }
+        
+        if (!recipes || recipes.length === 0) {
+            const msg = document.createElement("p");
+            msg.id = "bogusSearchMessage";
+            msg.textContent = "No recipes found.";
+            postList.appendChild(msg);
+            return;
+        }
+        recipes.forEach(recipe => {
+            const article = document.createElement("article");
+            article.classList.add("post");
+
+            const fig = document.createElement("figure");
+            article.appendChild(fig);
+
+            const img = document.createElement("img");
+            img.src = recipe.image_url || "../imgs/default.jpg";
+            img.alt = recipe.title || "What should be a recipe.";
+            fig.appendChild(img);
+
+            const figcap = document.createElement("figcaption");
+            fig.appendChild(figcap);
+
+            const title = document.createElement("h3");
+            title.textContent = recipe.title;
+            figcap.appendChild(title);
+
+            const username = document.createElement("h5");
+            username.textContent = recipe.username;
+            figcap.appendChild(username);
+
+            const time = document.createElement("h5");
+            time.textContent = new Date(recipe.created_at).toLocaleString();
+            figcap.appendChild(time);
+
+            const summary = document.createElement("p");
+            summary.textContent = recipe.summary || "";
+            figcap.appendChild(summary);
+
+            const button = document.createElement("button");
+            button.textContent = "View Full Recipe";
+            button.addEventListener("click", () => {
+                window.location.href = `fullrecipe.html?slug=${encodeURIComponent(recipe.slug)}`
+            });
+            figcap.appendChild(button);
+
+            postList.appendChild(article);
+        });
     }
-}
+    // Search logic
+    if (searchInput) {
+        searchInput.addEventListener("input", (evt) => {
+            const searchValue = evt.target.value.trim();
 
-// Search posts whenever the user types
-if(document.getElementById("search")) {
-    document.getElementById("search").addEventListener("keyup", searchPosts);
-}
+            clearTimeout(searchTimeout);
 
+            searchTimeout = setTimeout(() => {
+                
+                loadPosts(searchValue, currentPage);
+            }, 500);
+        });
+    }
+    
+    prevButton.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            loadPosts(searchInput.value.trim(), currentPage);
+        }
+    });
+    nextButton.addEventListener("click", () => {
+        currentPage++
+        loadPosts(searchInput.value.trim(), currentPage);
+    })
 
-
+    // Load posts for the first time
+    loadPosts("", currentPage);
+});

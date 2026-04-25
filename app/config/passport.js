@@ -9,8 +9,6 @@ let options = {
     secretOrKey: process.env.JWT_SECRET_KEY,
 };
 
-require("dotenv").config();
-
 passport.use(new JwtStrategy(options, async (jwt_payload, done) => {
     try {
         const result = await pool.query(

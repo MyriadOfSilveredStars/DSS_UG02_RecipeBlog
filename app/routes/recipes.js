@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { body } = require("express-validator");
 const authenticateJWT = require("../middlewares/authenticateJWT");
-const { publishRecipe } = require("../controllers/recipes");
+const { publishRecipe, editRecipe, loadRecipe, loadAllRecipes, deleteRecipe, loadMyRecipes } = require("../controllers/recipes");
 
 const router = Router();
 
@@ -30,6 +30,11 @@ const validateRecipe = [
     .isBoolean().withMessage("subscriber_only must be true or false.")
 ];
 
-router.post("/publishrecipe", validateRecipe, authenticateJWT, publishRecipe);
+router.post("/recipes", validateRecipe, authenticateJWT, publishRecipe);
+router.put("/recipes/:slug", validateRecipe, authenticateJWT, editRecipe);
+router.delete("/recipes/:slug", authenticateJWT, deleteRecipe);
+router.get("/recipes", loadAllRecipes);
+router.get("/recipes/my-recipes", authenticateJWT, loadMyRecipes);
+router.get("/recipes/:slug", loadRecipe);
 
 module.exports = router;

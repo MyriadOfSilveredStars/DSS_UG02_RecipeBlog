@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <script src="../js/createrecipe.js" defer></script>
+        <script src="../js/editrecipe.js" defer></script>
         <script src="../js/main.js" defer></script>
     </head>
     <body>
@@ -23,36 +23,33 @@
             <ul>
                 <li><a href="../html/index.html">Home</a></li>
                 <li><a href="../html/posts.html">Trending Recipes</a></li>
-                <li><a href="../html/myrecipes.html">My Recipes</a></li>
-                <li class="active"><a href="../html/createrecipe.html">Publish A Recipe</a></li>
+                <li class = "active"><a href="../html/myrecipes.html">My Recipes</a></li>
+                <li><a href="../html/createrecipe.html">Publish A Recipe</a></li>
                 <li><a href="../html/payment.html">Subscribe!</a></li>
             </ul>
         </nav>
 
         <main>
             <section>
-                <h2>Share your culinary wisdom</h2>
-                <p>Give your fellow students some new ideas</p>
+                <h2>Refine your taste</h2>
+                <p>Use the form below to edit your post</p>
 
                 <form id="recipe_form">
                     <fieldset>
-                        <legend>Compose a Post</legend>
+                        <legend>Edit Your Post.</legend>
                             <label for="title_input">Recipe Title:</label>
                             <input id="title_input" name="title_input" type="text" placeholder="Enter recipe title..." required>
-                            <br>
+
                             <label for="summary_input">Recipe Summary:</label>
                             <textarea id="summary_input" name="summary_input" placeholder="Write your method here..." required></textarea>
-                            <br>
+
                             <label for="image_url_input">Image URL:</label>
                             <input type="url" id="image_url_input" name="image_url_input" placeholder="Enter image URL..."/>
-                            <br>
+
                             <label for="content_input">Content:</label>
                             <textarea id="content_input" name="content_input" placeholder="Write your recipe here..." required></textarea>
-                            <br>
-                            <label for="subscriber_only_input">Subscriber's Only?</label>
-                            <input type="checkbox" id="subscriber_only_input" name="subscriber_only_input"/>
                             
-                            <button type="submit">Publish your recipe!</button>
+                            <button type="submit">Save your edit!</button>
                     </fieldset>
                 </form>
                 <p id="message"></p>

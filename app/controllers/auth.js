@@ -112,7 +112,6 @@ exports.login = async (req, res) => {
             process.env.JWT_SECRET_KEY,
             { expiresIn: process.env.JWT_EXPIRATION_TIME, }
         );
-
         return res.status(200).json({
             status: "success",
             msg: "Login successful.",

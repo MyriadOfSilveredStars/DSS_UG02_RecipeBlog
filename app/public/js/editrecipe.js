@@ -10,20 +10,28 @@ document.addEventListener("DOMContentLoaded", () => {
         const summary = document.getElementById("summary_input").value.trim();
         const image_url = document.getElementById("image_url_input").value.trim();
         const content = document.getElementById("content_input").value.trim();
-        const subscriber_only = document.getElementById("subscriber_only_input").checked;
 
         const token = localStorage.getItem("token");
 
         messageElement.textContent = "";
 
         if(!token) {
-            messageElement.textContent = "You must be logged in to make a post!";
+            messageElement.textContent = "You must be logged in to edit a post!";
+            return;
+        }
+
+        // Pull the slug, make sure it exists
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get("slug")
+
+        if (!slug) {
+            renderMessage("No slug was provided.")
             return;
         }
 
         try {
-            const response = await fetch("/api/recipes", {
-                method: "POST",
+            const response = await fetch(`/api/recipes/${encodeURIComponent(slug)}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`
@@ -32,19 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     title,
                     summary,
                     image_url,
-                    content,
-                    subscriber_only
+                    content
                 })
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                messageElement.textContent = data.msg || "Post failed.";
+                messageElement.textContent = data.msg || "Edit failed.";
                 return;
             }
 
-            messageElement.textContent = "Your recipe has been published :)";
+            messageElement.textContent = "Your recipe has been edited :)";
             
             form.reset();
         } catch (error) {

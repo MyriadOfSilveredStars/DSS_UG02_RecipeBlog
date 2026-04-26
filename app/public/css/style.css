@@ -2,6 +2,11 @@ html{
     background-color: white;    
 }
 
+img{
+    max-width: 30%;
+    max-height: 30%;
+}
+
 body {
     background-color: #f6f7ef;
     color: black;

@@ -96,12 +96,17 @@ exports.editRecipe = async (req, res) => {
     const client = await pool.connect();
 
     try {
-        const {
+        var {
             title,
             summary,
             content,
             image_url
         } = req.body;
+
+        //check that the user hasn't used any bad inputs
+        content = sanitisation(content);
+        title = sanitisation(title);
+        summary = sanitisation(summary);
 
         const currentSlug = req.params.slug;
 

@@ -30,12 +30,14 @@ const testdata = {
 
 describe('Check Connection', function() {
 
+    //this test works
     it("Connects to app.js", function(done) {
         request
             .get('/')
             .expect(200, done);
     });
 
+    //this one fails, because it's connecting to a controller i think...
     it("Connects to auth dashboard", function(done){
         dashboard_request
         .get('/')
@@ -44,6 +46,8 @@ describe('Check Connection', function() {
 
 });
 
+//everything beyond this fails miserably
+//i need to test auth and pass values through :/
 describe("Signing Up", () => {
     it("on the verge", async () => {
         const res = await request(registeruser).get('/', testdata).expect(200);

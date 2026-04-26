@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             if (!response.ok) {
-                messageElement.textContent = data.msg || "Login unsuccessful";
+                messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "Login unsuccessful";
                 return;
             }
             

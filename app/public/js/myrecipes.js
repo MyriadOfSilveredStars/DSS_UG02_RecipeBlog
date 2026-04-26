@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
             
             if (!response.ok) {
-                console.error(data.msg || "Failed to load your posts.");
+                console.error(data.errors?.map(error => error.msg).join(", ") || data.msg || "Failed to load your posts.");
                 return;
             }
 
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await response.json();
 
         if(!response.ok) {
-            alert(data.msg || "Unable to delete recipe.");
+            alert(data.errors?.map(error => error.msg).join(", ") || data.msg || "Unable to delete recipe.");
             return;
         }
 

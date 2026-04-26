@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (!response.ok) {
-                messageElement.textContent = data.msg || "Edit failed.";
+                messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "Edit failed.";
                 return;
             }
 

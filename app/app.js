@@ -63,3 +63,5 @@ function sanitiseInputs(inputs) {
     
     return inputs;
 }
+
+module.exports = app;

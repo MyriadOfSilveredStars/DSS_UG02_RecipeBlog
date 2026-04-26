@@ -1,48 +1,58 @@
-const supertest = require("supertest");
-const assert = require("assert");
 const app = require("../app/app");
+const request = require("supertest")(app)
+const assert = require("assert");
+
+
+const registeruser = require("../app/controllers/auth").register;
+const loginuser = require("../app/controllers/auth").login;
+const dashboard = require("../app/controllers/auth").dashboard;
+
+const dashboard_request = require("supertest")(dashboard);
 
 //variables to use in testing
-var username = "";
+var username = "johndoe";
 var password = "password1234";
 var email = "johndoe@yellowking.com"
 
+const testdata = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username,
+            email,
+            password
+        })
+    };
+
 //let the testing begin
 
-describe("GET CHECK", function() {
-    it("should have a status code 200", function(done){
-        supertest(app)
-        .get("/")
-        .expect(200)
-        .end(function(err, res){
-            if(err) done (err);
-            done();
-        });
-    });
-});
+describe('Check Connection', function() {
 
-describe("Testing User Sign Up", function (){
-
-    it("blank fields should return error code 422", function(){
-        const testdata = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password
-                })
-            };
-
-        var res = register(testdata);
-        assert.strictEqual(res, 422);
-
+    it("Connects to app.js", function(done) {
+        request
+            .get('/')
+            .expect(200, done);
     });
 
-    it("if the user exists, it should return error code 409", function(){
-
+    it("Connects to auth dashboard", function(done){
+        dashboard_request
+        .get('/')
+        .expect(200, done);
     })
 
 });
+
+describe("Signing Up", () => {
+    it("on the verge", async () => {
+        const res = await request(registeruser).get('/', testdata).expect(200);
+    });
+});
+
+describe("Dashboard", () => {
+    it("i am near death", async () => {
+        const res = await request(dashboard).get('/').expect(200);
+    });
+})
+

@@ -9,7 +9,7 @@ require("dotenv").config();
 exports.register = async (req, res) => {
     const errors = validationResult(req);
 
-    console.log(req.body);
+    console.log("Body from app.test.js: " + req.body);
 
     // Return any validation errors
     if (!errors.isEmpty()) {
@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
         });
     }
     try {
-        const { username, email, password } = JSON.parse(req.body);
+        const { username, email, password } = req.body;
         console.log("Password from auth.js: " + password);
 
         if (username == "" || email == "" || password == ""){ //don't allow empty values

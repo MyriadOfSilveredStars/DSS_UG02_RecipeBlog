@@ -34,9 +34,6 @@ app.post('/makecomment', (req, res) => {
 
     let content = req.body.content_field;
 
-    //Clean the inputs with the sanitisation code
-    content = sanitiseInputs(content);
-
     //write this to the database
 
     // Redirect back to my_recipes.html
@@ -50,17 +47,5 @@ app.listen(process.env.PORT, () => {
     console.log(`Recipes 4 Students is listening on port: ${process.env.PORT}!`)
 });
 
-
-
-const sanitise = function sanitiseInputs(inputs) {
-    //uses regex to remove all instances of "bad" inputs
-    //such as html tags and other key words
-    //the regex expression will probably grow overtime
-
-    const badInputs = "<[^>]*>"; //regex currently removes all html tags
-    inputs = inputs.replace(new RegExp(badInputs, 'g'), "");
-    
-    return inputs;
-}
 
 module.exports = app;

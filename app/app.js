@@ -27,8 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/makecomment', (req, res) => {
-    //blaraghargh
-    //gab gnglaoohhlaaaaaarghhhhhhhaaaaaaaaaaaaaaaanhhophphna       aaaaaaaaaaaaaahaaa
+    
     // Get the current date
     let curDate = new Date();
     curDate = curDate.toLocaleString("en-GB");
@@ -53,7 +52,7 @@ app.listen(process.env.PORT, () => {
 
 
 
-function sanitiseInputs(inputs) {
+const sanitise = function sanitiseInputs(inputs) {
     //uses regex to remove all instances of "bad" inputs
     //such as html tags and other key words
     //the regex expression will probably grow overtime

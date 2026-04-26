@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const slugify = require("slugify");
 const pool = require("../db");
+const sanitisation = require('../public/js/sanitisation');
 
 exports.publishRecipe = async (req, res) => {
     const errors = validationResult(req);
@@ -13,14 +14,19 @@ exports.publishRecipe = async (req, res) => {
         });
     }
     try {
-        const {
+        var {
             title,
             summary,
             content,
             image_url,
             subscriber_only = false,
         } = req.body;
-
+        
+        //wash the user's mouth out
+        content = sanitisation(content);
+        title = sanitisation(title);
+        summary = sanitisation(summary);
+        
         let slug = slugify(title, {
             lower: true,
             strict: true,

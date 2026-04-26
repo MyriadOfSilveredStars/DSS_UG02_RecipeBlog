@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (!response.ok) {
-                console.error(data.msg || "Failed to load the recipes.");
+                console.error(data.errors?.map(error => error.msg).join(", ") || data.msg || "Failed to load the recipes.");
                 return;
             }
 

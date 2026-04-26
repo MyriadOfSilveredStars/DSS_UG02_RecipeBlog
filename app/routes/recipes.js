@@ -9,7 +9,7 @@ const validateRecipe = [
     body("title").trim()
     .notEmpty()
     .withMessage("The recipe must have a title")
-    .isLength({ min: 10, max: 150 }).withMessage("The title must be between 10 and 150 characters"),
+    .isLength({ min: 1, max: 150 }).withMessage("The title must be between 1 and 150 characters"),
 
     body("content")
     .trim()

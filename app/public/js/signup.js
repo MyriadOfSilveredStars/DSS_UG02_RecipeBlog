@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const data = await response.json();
             if (!response.ok) {
-                messageElement.textContent = data.msg || "User registration unsuccessful";
+                messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "User registration unsuccessful";
                 return;
             }
 

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const response = await fetch(`/api/recipes/${encodeURIComponent(slug)}`);
             const data = await response.json();
             if (!response.ok) {
-                renderMessage(data.msg || "Recipe not found.");
+                renderMessage(data.errors?.map(error => error.msg).join(", ") || data.msg || "Recipe not found.");
                 return;
             }
 

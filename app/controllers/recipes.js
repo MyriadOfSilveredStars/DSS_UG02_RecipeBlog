@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const slugify = require("slugify");
 const pool = require("../db");
+
 const sanitisation = require('../public/js/sanitisation');
 
 exports.publishRecipe = async (req, res) => {
@@ -246,7 +247,9 @@ exports.loadAllRecipes = async (req, res) => {
     try { 
         const limit = Math.min(parseInt(req.query.limit, 10) || 10, 50);
         const offset = parseInt(req.query.offset, 10) || 0;
-        const search = req.query.q?.trim() || "";
+
+        var search = req.query.q?.trim() || "";
+        search = sanitisation(search);
         const queryLimiter = limit + 1; 
         let result;
 

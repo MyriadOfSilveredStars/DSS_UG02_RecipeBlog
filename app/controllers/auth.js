@@ -5,13 +5,14 @@ const pool = require("../db");
 const { resend } = require("../config/email");
 const mfaStore = require("../config/mfaStore");
 
+//sanitisation
+const sanitisation = require('../public/js/sanitisation');
+
 
 require("dotenv").config();
 
 exports.register = async (req, res) => {
     const errors = validationResult(req);
-
-    console.log("Body from app.test.js: " + req.body);
 
     // Return any validation errors
     if (!errors.isEmpty()) {
@@ -22,8 +23,12 @@ exports.register = async (req, res) => {
         });
     }
     try {
-        const { username, email, password } = req.body;
-        console.log("Password from auth.js: " + password);
+        var { username, email, password } = req.body;
+
+        //sanitise the sign up info
+        username = sanitisation(username);
+        email = sanitisation(email);
+        password = sanitisation(password);
 
         if (username == "" || email == "" || password == ""){ //don't allow empty values
             return res.status(422).json({
@@ -91,7 +96,11 @@ exports.login = async (req, res) => {
         });
     }
     try {
-        const { email, password } = req.body;
+        var { email, password } = req.body;
+        //sanitise login attempts
+        email = sanitisation(email);
+        password = sanitisation(password);
+
         console.log("Login controller reached for:", email);
 
         const result = await pool.query(
@@ -176,7 +185,11 @@ exports.dashboard = async (req, res) => {
 
 exports.verifyMfa = async (req, res) => {
     try {
-        const { email, code } = req.body;
+        var { email, code } = req.body;
+
+        //sanitise these too i guess
+        email = sanitisation(email);
+        code = sanitisation(code);
 
         // Look up pending MFA entry
         const entry = mfaStore.get(email);

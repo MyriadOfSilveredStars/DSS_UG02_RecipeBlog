@@ -28,6 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "Login unsuccessful";
                 return;
             }
+
+            if (data.status === "mfa_required") {
+                // Store email so verify.js can use it
+                localStorage.setItem("pendingEmail", email);
+                window.location.href = "/html/verify.html";
+                return;
+            }
             
             localStorage.setItem("token", data.user.token);
             localStorage.setItem("userEmail", data.user.email);

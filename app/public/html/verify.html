@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Verify Your Identity</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="../css/style.css">
+        <script src="../js/verify.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>Two-Factor Authentication</h1>
+        </header>
+        <main>
+            <p>A verification code has been sent to your email. Please enter it below.</p>
+            <form id="verify_form">
+                <label for="code_input">Verification Code:</label>
+                <input type="text" id="code_input" placeholder="Enter 6-digit code..." required>
+                <button id="verify_btn" type="submit">Verify</button>
+            </form>
+            <p id="message"></p>
+        </main>
+    </body>
+</html>

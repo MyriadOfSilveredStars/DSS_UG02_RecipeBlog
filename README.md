@@ -4,7 +4,7 @@ Last Update: 22nd April 2026, by Rho
 
 Rho: working on input validation for login, sign up, blog posts etc, sql injection prevention
 
-Nik: working on authentication for login, sign up, payments
+Nik: working on authentication for login, sign up, payments, mfa
 
 Jay: working on database encryption
 

@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const pool = require("../db");
+const { resend } = require("../config/email");
+const mfaStore = require("../config/mfaStore");
 
 
 require("dotenv").config();
@@ -53,11 +55,10 @@ exports.register = async (req, res) => {
         );
         const newUser = newUserResult.rows[0];
 
-        // Create a JWT
         const token = jwt.sign(
             { id: newUser.id },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: process.env.JWT_EXPIRATION_TIME, }
+            { expiresIn: process.env.JWT_EXPIRATION_TIME }
         );
         return res.status(201).json({
             status: "success",
@@ -91,6 +92,7 @@ exports.login = async (req, res) => {
     }
     try {
         const { email, password } = req.body;
+        console.log("Login controller reached for:", email);
 
         const result = await pool.query(
             "SELECT id, username, email, password_hash FROM users WHERE email = $1",
@@ -107,20 +109,54 @@ exports.login = async (req, res) => {
             });
         }
         // Create a token for the user
-        const token = jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: process.env.JWT_EXPIRATION_TIME, }
-        );
-        return res.status(200).json({
-            status: "success",
-            msg: "Login successful.",
-            user: {
-                username: user.username,
-                email: user.email,
-                token
-            }
+
+        // const token = jwt.sign(
+        //     { id: user.id },
+        //     process.env.JWT_SECRET_KEY,
+        //     { expiresIn: process.env.JWT_EXPIRATION_TIME, }
+        // );
+        // return res.status(200).json({
+        //     status: "success",
+        //     msg: "Login successful.",
+        //     user: {
+        //         username: user.username,
+        //         email: user.email,
+        //         token
+        //     }
+        // });
+
+        //start MFA
+        //generate 6 digit MFA code
+        const mfaCode = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log("Generating MFA code:", mfaCode);
+
+        //store code with 5 minute expiry
+        mfaStore.set(email, {
+            code: mfaCode,
+            expiresAt: Date.now() + 5 * 60 * 1000,
+            userId: user.id,
+            username: user.username
         });
+
+        // Send email
+        try {
+            await resend.emails.send({
+                from: "onboarding@resend.dev",
+                to: email,
+                subject: "Your login code",
+                text: `Your verification code is: ${mfaCode}. It expires in 5 minutes.`
+            });
+            console.log(`MFA code sent to ${email}`);
+        } catch (emailError) {
+            console.error("Email sending failed:", emailError.message);
+            console.log(`MFA code for ${email}: ${mfaCode}`);
+        }
+
+        return res.status(200).json({
+            status: "mfa_required",
+            msg: "Verification code sent to your email."
+        });
+        //end MFA
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -136,4 +172,61 @@ exports.dashboard = async (req, res) => {
     return res.status(200).json({
         msg: "This is the Dashboard Page."
     });
+};
+
+exports.verifyMfa = async (req, res) => {
+    try {
+        const { email, code } = req.body;
+
+        // Look up pending MFA entry
+        const entry = mfaStore.get(email);
+
+        if (!entry) {
+            return res.status(401).json({
+                status: "error",
+                msg: "No pending verification for this email."
+            });
+        }
+
+        if (Date.now() > entry.expiresAt) {
+            mfaStore.delete(email);
+            return res.status(401).json({
+                status: "error",
+                msg: "Verification code has expired. Please log in again."
+            });
+        }
+
+        if (code !== entry.code) {
+            return res.status(401).json({
+                status: "error",
+                msg: "Incorrect verification code."
+            });
+        }
+
+        // All checks passed — now create the JWT
+        mfaStore.delete(email);
+
+        const token = jwt.sign(
+            { id: entry.userId },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: process.env.JWT_EXPIRATION_TIME }
+        );
+
+        return res.status(200).json({
+            status: "success",
+            msg: "Login successful.",
+            user: {
+                username: entry.username,
+                email: email,
+                token
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            status: "error",
+            msg: "Internal server error."
+        });
+    }
 };

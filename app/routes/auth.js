@@ -1,10 +1,8 @@
 const { Router } = require("express");
 const { body } = require("express-validator");
-const { register } = require("../controllers/auth");
-const { login } = require("../controllers/auth");
 const authenticateJWT = require("../middlewares/authenticateJWT");
 const rateLimiter = require("../middlewares/loginLimit");
-const { dashboard } = require("../controllers/auth");
+const { register, login, dashboard, verifyMfa } = require("../controllers/auth");
 
 const router = Router();
 
@@ -32,5 +30,7 @@ const validateLogin = [
 router.post("/login", rateLimiter, validateLogin, login);
 
 router.get('/dashboard', authenticateJWT, dashboard);
+
+router.post("/verify-mfa", verifyMfa);
 
 module.exports = router;

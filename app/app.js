@@ -48,6 +48,25 @@ app.post('/makecomment', async (req, res) => {
     }
 });
 
+    app.get('/api/recipes/:id/comments', async (req, res) => {
+    const recipeId = req.params.id;
+
+    try {
+        const result = await pool.query(
+            `SELECT c.id, c.content, c.created_at, u.username
+             FROM comments c
+             JOIN users u ON c.author_id = u.id
+             WHERE c.recipe_id = $1
+             ORDER BY c.created_at DESC`,
+            [recipeId]
+        );
+
+        res.json({ comments: result.rows });
+    } catch (err) {
+        console.error('Error loading comments:', err);
+        res.status(500).json({ error: 'Failed to load comments' });
+    }
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Recipes 4 Students is listening on port: ${process.env.PORT}!`)

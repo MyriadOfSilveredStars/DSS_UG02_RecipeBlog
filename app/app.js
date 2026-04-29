@@ -5,6 +5,7 @@ const fs = require('fs');
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipes");
 const passport = require("passport");
+const pool = require('./db');
 require("./config/passport");
 
 app.use(express.static(__dirname + '/public'));
@@ -26,20 +27,25 @@ app.get('/', (req, res) => {
     })
 });
 
-app.post('/makecomment', (req, res) => {
-    
-    // Get the current date
-    let curDate = new Date();
-    curDate = curDate.toLocaleString("en-GB");
+app.post('/makecomment', async (req, res) => {
+    const content = req.body.content_field;
+    const recipeId = req.body.recipe_id;
 
-    let content = req.body.content_field;
+    // TEMPORARY hardcoded user (replace later)
+    const authorId = 1;
 
-    //write this to the database
+    try {
+        await pool.query(
+            `INSERT INTO comments (author_id, recipe_id, content)
+             VALUES ($1, $2, $3)`,
+            [authorId, recipeId, content]
+        );
 
-    // Redirect back to my_recipes.html
-    res.sendFile(__dirname + "/public/html/posts.html");
-
-
+        res.redirect('/html/posts.html');
+    } catch (err) {
+        console.error('Error saving comment:', err);
+        res.status(500).send('Error saving comment');
+    }
 });
 
 

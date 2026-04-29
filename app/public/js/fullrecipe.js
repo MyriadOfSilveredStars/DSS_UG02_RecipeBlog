@@ -31,6 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderRecipe = (recipe) => {
         clearRecipe();
 
+        const postIdInput = document.getElementById("postId");
+        if (postIdInput) {
+            postIdInput.value = recipe.id;
+        }
+
         const article = document.createElement("article");
         article.classList.add("post");
 

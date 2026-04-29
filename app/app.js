@@ -4,6 +4,7 @@ const app = express();
 const fs = require('fs');
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipes");
+const commentRoutes = require("./routes/comments");
 const passport = require("passport");
 const pool = require('./db');
 require("./config/passport");
@@ -16,6 +17,7 @@ app.use(passport.initialize());
 
 app.use('/api', authRoutes);
 app.use("/api", recipeRoutes);
+app.use("/api", commentRoutes);
 
 // Landing page
 app.get('/', (req, res) => {
@@ -26,28 +28,6 @@ app.get('/', (req, res) => {
         }
     })
 });
-
-app.post('/makecomment', async (req, res) => {
-    const content = req.body.content_field;
-    const recipeId = req.body.recipe_id;
-
-    // TEMPORARY hardcoded user (replace later)
-    const authorId = 1;
-
-    try {
-        await pool.query(
-            `INSERT INTO comments (author_id, recipe_id, content)
-             VALUES ($1, $2, $3)`,
-            [authorId, recipeId, content]
-        );
-
-        res.redirect('/html/posts.html');
-    } catch (err) {
-        console.error('Error saving comment:', err);
-        res.status(500).send('Error saving comment');
-    }
-});
-
 
 app.listen(process.env.PORT, () => {
     console.log(`Recipes 4 Students is listening on port: ${process.env.PORT}!`)

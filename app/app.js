@@ -4,6 +4,7 @@ const app = express();
 const fs = require('fs');
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipes");
+const commentRoutes = require("./routes/comments");
 const passport = require("passport");
 const pool = require('./db');
 require("./config/passport");
@@ -16,6 +17,7 @@ app.use(passport.initialize());
 
 app.use('/api', authRoutes);
 app.use("/api", recipeRoutes);
+app.use("/api", commentRoutes);
 
 // Landing page
 app.get('/', (req, res) => {
@@ -25,47 +27,6 @@ app.get('/', (req, res) => {
             console.log(err);
         }
     })
-});
-
-app.post('/makecomment', async (req, res) => {
-    const content = req.body.content_field;
-    const recipeId = req.body.recipe_id;
-
-    // TEMPORARY hardcoded user (replace later)
-    const authorId = 1;
-
-    try {
-        await pool.query(
-            `INSERT INTO comments (author_id, recipe_id, content)
-             VALUES ($1, $2, $3)`,
-            [authorId, recipeId, content]
-        );
-
-        res.redirect('/html/posts.html');
-    } catch (err) {
-        console.error('Error saving comment:', err);
-        res.status(500).send('Error saving comment');
-    }
-});
-
-    app.get('/api/recipes/:id/comments', async (req, res) => {
-    const recipeId = req.params.id;
-
-    try {
-        const result = await pool.query(
-            `SELECT c.id, c.content, c.created_at, u.username
-             FROM comments c
-             JOIN users u ON c.author_id = u.id
-             WHERE c.recipe_id = $1
-             ORDER BY c.created_at DESC`,
-            [recipeId]
-        );
-
-        res.json({ comments: result.rows });
-    } catch (err) {
-        console.error('Error loading comments:', err);
-        res.status(500).json({ error: 'Failed to load comments' });
-    }
 });
 
 app.listen(process.env.PORT, () => {

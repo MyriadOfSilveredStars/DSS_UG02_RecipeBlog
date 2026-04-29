@@ -66,5 +66,19 @@ describe('Testing the sanitisation', function(){
         testInput = sanitisation(testInput);
         assert.strictEqual(testInput, expected)
     })
+
+    it("So long as there's an enclosing <> pair, the innards will be removed", function(){
+        let testInput = "<html<<<<>> ad wao>> there were tags here </html>";
+        let expected = "> ad wao>> there were tags here ";
+        testInput = sanitisation(testInput);
+        assert.strictEqual(testInput, expected)
+    })
+
+    it("Should reject XSS attempt", function(){
+        let malCode = "<script> alert('START RUNNING') </script>";
+        let expected = " alert('START RUNNING') ";
+        malCode = sanitisation(malCode);
+        assert.strictEqual(malCode, expected);
+    })
 })
 

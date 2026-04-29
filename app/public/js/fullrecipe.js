@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const postList = document.getElementById("postList");
+    const commentList = document.getElementById("commentList");
 
 
     const loadRecipe = async () => {
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             renderRecipe(data.recipe);
+            loadComments(data.recipe.id);
 
         } catch(error) {
             console.error(error);
@@ -28,6 +30,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    const loadComments = async (recipeId) => {
+    commentList.innerHTML = "";
+
+        try {
+            const response = await fetch(`/api/recipes/${recipeId}/comments`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                commentList.textContent = "Could not load comments.";
+                return;
+            }
+
+            if (!data.comments || data.comments.length === 0) {
+                commentList.textContent = "No comments yet.";
+                return;
+        }
+
+        data.comments.forEach(comment => {
+            const article = document.createElement("article");
+            article.classList.add("comment");
+
+            const username = document.createElement("h4");
+            username.textContent = comment.username || "Unknown user";
+
+            const content = document.createElement("p");
+            content.textContent = comment.content;
+
+            const date = document.createElement("small");
+            date.textContent = new Date(comment.created_at).toLocaleString();
+
+            article.appendChild(username);
+            article.appendChild(content);
+            article.appendChild(date);
+
+            commentList.appendChild(article);
+        });
+
+    } catch (error) {
+        console.error(error);
+        commentList.textContent = "Something went wrong loading comments.";
+    }
+    };
+    
     const renderRecipe = (recipe) => {
         clearRecipe();
 

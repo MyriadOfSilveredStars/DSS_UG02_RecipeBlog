@@ -5,8 +5,11 @@ const assert = require("assert");
 const authController = require('../app/controllers/auth');
 const register = authController.register;
 
-const auth = require('../app/routes/auth');
-const request = require('supertest')(auth);
+//const auth = require('../app/routes/auth');
+//const request = require('supertest')(auth);
+
+//sanitisation
+const sanitisation = require('../app/public/js/sanitisation');
 
 //variables to use in testing
 var username = "johndoe";
@@ -23,7 +26,7 @@ const testdata = {
             email,
             password
         })
-    };
+};
 
 //let the testing begin
 /* 
@@ -37,7 +40,7 @@ describe('Check Connection to App', function() {
     });
 
 });
-*/
+
 
 //I HAVE IT
 //i did not in fact have it
@@ -51,6 +54,17 @@ describe('Test registering a new user', function() {
         request
         .get('/api/register')
         .expect(422);
+    })
+})
+
+*/
+
+describe('Testing the sanitisation', function(){
+    it("Should have no < or >", function(){
+        let testInput = "<html> there were tags here </html>";
+        let expected = " there were tags here ";
+        testInput = sanitisation(testInput);
+        assert.strictEqual(testInput, expected)
     })
 })
 

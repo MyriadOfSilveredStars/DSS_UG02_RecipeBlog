@@ -30,6 +30,52 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    const commentForm = document.getElementById("commentForm");
+
+    commentForm.addEventListener("submit", async (evt) => {
+        evt.preventDefault();
+
+        const token = localStorage.getItem("token");
+        const content = document.getElementById("content_field").value.trim();
+        const recipeId = document.getElementById("postId").value;
+
+        if (!token) {
+            alert("You must be logged in to comment.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/comments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    recipe_id: recipeId,
+                    content
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                alert(data.msg || "Comment failed.");
+                return;
+            }
+
+            // clear form
+            document.getElementById("content_field").value = "";
+
+            // reload comments
+            loadComments(recipeId);
+
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong.");
+        }
+    });
+
     const loadComments = async (recipeId) => {
     commentList.innerHTML = "";
 

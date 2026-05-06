@@ -1,7 +1,13 @@
 const pool = require("../db");
 
+//sanitisation
+const sanitisation = require('../public/js/sanitisation');
+
 const createComment = async (req, res) => {
-    const { recipe_id, content } = req.body;
+    var { recipe_id, content } = req.body;
+    recipe_id = sanitisation(recipe_id);
+    content = sanitisation(comment);
+    
     const authorId = req.user.id;
 
     try {

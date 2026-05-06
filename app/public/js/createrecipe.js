@@ -43,8 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "Post failed.";
                 return;
             }
-
+            
+            alert("Your recipe has been published!");
             messageElement.textContent = "Your recipe has been published :)";
+            
             
             form.reset();
         } catch (error) {

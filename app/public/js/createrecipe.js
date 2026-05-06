@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             alert("Your recipe has been published!");
             messageElement.textContent = "Your recipe has been published :)";
-            
+            window.location.href = "myrecipes.html";
             
             form.reset();
         } catch (error) {

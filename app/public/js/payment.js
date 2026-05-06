@@ -1,15 +1,56 @@
-let subscribeButton = document.getElementById("subscribe_btn");
-subscribeButton.addEventListener("click", () => subscribeConfirm());
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("subscribeForm");
+    const messageElement = document.getElementById("message");
 
+    form.addEventListener("submit", async (evt) => {
+        // stop the page from reloading so that our auth logic can run
+        evt.preventDefault();
 
-function subscribeConfirm(){
-    alert("You've subscribed!");
+        const fullName = document.getElementById("fullname_input").value.trim();
+        const email = document.getElementById("email_input").value.trim();
+        const cardNum = document.getElementById("cardnum_input").value.trim();
+        const sortCode = document.getElementById("sortcode_input").value.trim();
+        const secCode = document.getElementById("seccode_input").value.trim();
 
-    //this is where we update the user's status in the database
-    //from unpaid to paid
-    //but also to store their payment information
-    //encrypted, of course
+        const token = localStorage.getItem("token");
 
-    window.location.href = "paidrecipes.html";
+        messageElement.textContent = "";
 
-}
+        if(!token) {
+            messageElement.textContent = "You must be logged in to subscribe!";
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    fullName,
+                    email,
+                    cardNum,
+                    sortCode,
+                    secCode
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                messageElement.textContent = data.errors?.map(error => error.msg).join(", ") || data.msg || "Post failed.";
+                return;
+            }
+            
+            alert("You've subscribed!");
+            window.location.href = "index.html";
+            
+            form.reset();
+        } catch (error) {
+            console.error(error);
+            messageElement.textContent = "Something went wrong.";
+        }
+    });
+});

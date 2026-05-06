@@ -6,8 +6,8 @@ const sanitisation = require('../public/js/sanitisation');
 const createComment = async (req, res) => {
     var { recipe_id, content } = req.body;
     recipe_id = sanitisation(recipe_id);
-    content = sanitisation(comment);
-    
+    content = sanitisation(content);
+
     const authorId = req.user.id;
 
     try {

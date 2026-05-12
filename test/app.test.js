@@ -36,37 +36,6 @@ const testdata = {
         })
 };
 
-//let the testing begin
-/* 
-describe('Check Connection to App', function() {
-
-    //this test works
-    it("Connects to app.js", function(done) {
-        request
-            .get('/')
-            .expect(200, done);
-    });
-
-});
-
-
-//I HAVE IT
-//i did not in fact have it
-// i can send data TO the auth.js controller, but not get status codes back
-// that's about it actually it doesn't run if i call it with supertest
-// my console uses bash because this coursework makes me want to bash my head against a rock
-
-describe('Test registering a new user', function() {
-    it ("Should return code 422 for missing information", async function() {
-
-        request
-        .get('/api/register')
-        .expect(422);
-    })
-})
-
-*/
-
 describe('Testing the sanitisation', function(){
     it("Should have no < or >", function(){
         let testInput = "<html> there were tags here </html>";

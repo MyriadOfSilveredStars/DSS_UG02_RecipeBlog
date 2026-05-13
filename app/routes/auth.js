@@ -4,6 +4,7 @@ const authenticateJWT = require("../middlewares/authenticateJWT");
 const rateLimiter = require("../middlewares/loginLimit");
 const { register, login, dashboard, verifyMfa } = require("../controllers/auth");
 
+
 const router = Router();
 
 const validateRegister = [

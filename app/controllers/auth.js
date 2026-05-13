@@ -8,6 +8,9 @@ const mfaStore = require("../config/mfaStore");
 //sanitisation
 const sanitisation = require('../public/js/sanitisation');
 
+const { transporter } = require("../config/email");
+const nodemailer = require("nodemailer");
+
 
 require("dotenv").config();
 
@@ -149,8 +152,8 @@ exports.login = async (req, res) => {
 
         // Send email
         try {
-            await resend.emails.send({
-                from: "onboarding@resend.dev",
+            await transporter.sendMail({
+                from: process.env.GMAIL_USER,
                 to: email,
                 subject: "Your login code",
                 text: `Your verification code is: ${mfaCode}. It expires in 5 minutes.`

@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const pool = require("../db");
 const { resend } = require("../config/email");
 const mfaStore = require("../config/mfaStore");
+const crypto = require("crypto");
 
 //sanitisation
 const sanitisation = require('../public/js/sanitisation');
@@ -137,7 +138,7 @@ exports.login = async (req, res) => {
 
         //start MFA
         //generate 6 digit MFA code
-        const mfaCode = Math.floor(100000 + Math.random() * 900000).toString();
+        const mfaCode = crypto.randomInt(100000, 1000000).toString();
 
         //store code with 5 minute expiry
         mfaStore.set(email, {

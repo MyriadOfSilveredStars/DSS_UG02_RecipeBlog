@@ -104,8 +104,6 @@ exports.login = async (req, res) => {
         email = sanitisation(email);
         password = sanitisation(password);
 
-        console.log("Login controller reached for:", email);
-
         const result = await pool.query(
             "SELECT id, username, email, password_hash FROM users WHERE email = $1",
             [email]
@@ -140,7 +138,6 @@ exports.login = async (req, res) => {
         //start MFA
         //generate 6 digit MFA code
         const mfaCode = Math.floor(100000 + Math.random() * 900000).toString();
-        console.log("Generating MFA code:", mfaCode);
 
         //store code with 5 minute expiry
         mfaStore.set(email, {
@@ -158,10 +155,10 @@ exports.login = async (req, res) => {
                 subject: "Your login code",
                 text: `Your verification code is: ${mfaCode}. It expires in 5 minutes.`
             });
-            console.log(`MFA code sent to ${email}`);
+            
         } catch (emailError) {
             console.error("Email sending failed:", emailError.message);
-            console.log(`MFA code for ${email}: ${mfaCode}`);
+            
         }
 
         return res.status(200).json({

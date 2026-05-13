@@ -1,14 +1,6 @@
 require('dotenv').config();
 const { Pool } = require('pg');
 
-// Debugging, should remove this later.
-console.log("DB config:", {
-  user: process.env.DB_USERNAME,
-  database: process.env.DB_DATABASE,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT
-});
-
 const pool = new Pool({
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,

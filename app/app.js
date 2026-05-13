@@ -4,7 +4,9 @@ const app = express();
 const fs = require('fs');
 const authRoutes = require("./routes/auth");
 const recipeRoutes = require("./routes/recipes");
+const commentRoutes = require("./routes/comments");
 const passport = require("passport");
+const pool = require('./db');
 require("./config/passport");
 
 app.use(express.static(__dirname + '/public'));
@@ -15,6 +17,7 @@ app.use(passport.initialize());
 
 app.use('/api', authRoutes);
 app.use("/api", recipeRoutes);
+app.use("/api", commentRoutes);
 
 // Landing page
 app.get('/', (req, res) => {
@@ -25,23 +28,6 @@ app.get('/', (req, res) => {
         }
     })
 });
-
-app.post('/makecomment', (req, res) => {
-    
-    // Get the current date
-    let curDate = new Date();
-    curDate = curDate.toLocaleString("en-GB");
-
-    let content = req.body.content_field;
-
-    //write this to the database
-
-    // Redirect back to my_recipes.html
-    res.sendFile(__dirname + "/public/html/posts.html");
-
-
-});
-
 
 app.listen(process.env.PORT, () => {
     console.log(`Recipes 4 Students is listening on port: ${process.env.PORT}!`)

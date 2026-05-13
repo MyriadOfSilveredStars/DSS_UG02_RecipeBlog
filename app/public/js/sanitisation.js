@@ -1,3 +1,5 @@
+
+
 //Function to sanitise inputs from the user
 const sanitise = function sanitiseInputs(inputs) {
     //uses regex to remove all instances of "bad" inputs
